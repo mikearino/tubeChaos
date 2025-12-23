@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import Obstacle from '../objects/Obstacle'
 
 const SCREEN_WIDTH = 1280
 const SCREEN_HEIGHT = 720
@@ -64,3 +65,4 @@ export default class GameScene extends Phaser.Scene {
     this.water.tilePositionY += WATER_SCROLL_SPEED * delta;
   }
 }
+
