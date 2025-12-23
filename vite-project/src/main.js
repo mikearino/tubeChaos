@@ -1,4 +1,4 @@
-import Phaser from "phaser";
+import Phaser, { Physics } from "phaser";
 import GameScene from "./scenes/GameScene";
 
 const config = {
@@ -6,7 +6,11 @@ const config = {
   width: 1280,
   height: 720,
   backgroundColor: '#a8e518',
-  scene: [GameScene]
+  scene: [GameScene],
+  physics: {
+    default: 'arcade',
+    arcade: {debug:true}
+  }
 }
 
 new Phaser.Game(config);

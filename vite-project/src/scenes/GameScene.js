@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import Obstacle from '../objects/Obstacle'
 import Rock from '../objects/Rock'
+import Player from '../objects/Player'
 
 const SCREEN_WIDTH = 1280
 const SCREEN_HEIGHT = 720
@@ -28,6 +29,7 @@ export default class GameScene extends Phaser.Scene {
     this.load.image('water', '/assets/images/water.png')
     this.load.image('shore', '/assets/images/shore.png')
     this.load.image('rock', '/assets/images/rock.png')
+    this.load.image('tube', '/assets/images/tube.png')
     }
     
   create(){
@@ -61,6 +63,13 @@ export default class GameScene extends Phaser.Scene {
     ).setOrigin(0,0)
     .setFlipX(true);
 
+    //setup inputs
+    this.cursors = this.input.keyboard.createCursorKeys();
+
+    // add player
+     this.player = new Player(this, 400, 500, 'tube')
+     this.player.setScale(1.5)
+
     // rock array
     this.rocks = [];
 
@@ -79,16 +88,20 @@ export default class GameScene extends Phaser.Scene {
   }
 
   update(time, delta) {
+    //update player
+    this.player.update(this.cursors, delta)
+
+
     // scroll water upward
     this.water.tilePositionY += WATER_SCROLL_SPEED * delta;
     // scroll rocks upward
     for (let i = this.rocks.length - 1; i >= 0; i--) {
       const rock = this.rocks[i];
       rock.update(delta)
-    }
-    if (Rock.y + Rock.height < 0) {
-      Rock.destroy();
-      this.rocks.splice(i, 1);
+        if (rock.y + rock.height < 0) {
+        rock.destroy();
+        this.rocks.splice(i, 1);
+      }
     }
   }
 }
