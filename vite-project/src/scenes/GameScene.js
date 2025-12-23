@@ -63,15 +63,33 @@ export default class GameScene extends Phaser.Scene {
 
     // rock array
     this.rocks = [];
-    this.rock = new Rock(this, 400, 1100);
+
+    // random rock spawner
+    this.time.addEvent({
+      delay: 1000,
+      loop: true,
+      callback: () => {
+        const x = Phaser.Math.Between(300, 900)
+        const y = 900; // spawn offscreen below
+
+        const rock = new Rock(this, x, y);
+        this.rocks.push(rock);
+      }
+    })
   }
 
-    
-
   update(time, delta) {
-    // scroll water downward
+    // scroll water upward
     this.water.tilePositionY += WATER_SCROLL_SPEED * delta;
-    this.rock.update(delta)
+    // scroll rocks upward
+    for (let i = this.rocks.length - 1; i >= 0; i--) {
+      const rock = this.rocks[i];
+      rock.update(delta)
+    }
+    if (Rock.y + Rock.height < 0) {
+      Rock.destroy();
+      this.rocks.splice(i, 1);
+    }
   }
 }
 
